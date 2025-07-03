@@ -1,0 +1,135 @@
+nohup: 忽略输入
+训练集长度: 51
+测试集长度: 22
+
+Chain 2: 100%|█████████▉| 49984/50000 [16:55:17<00:18,  1.16s/it]
+Chain 2: 100%|█████████▉| 49985/50000 [16:55:19<00:17,  1.16s/it]
+Chain 2: 100%|█████████▉| 49986/50000 [16:55:20<00:16,  1.16s/it]
+Chain 2: 100%|█████████▉| 49987/50000 [16:55:21<00:15,  1.16s/it]
+Chain 2: 100%|█████████▉| 49988/50000 [16:55:22<00:13,  1.15s/it]
+Chain 2: 100%|█████████▉| 49989/50000 [16:55:23<00:12,  1.16s/it]
+Chain 2: 100%|█████████▉| 49990/50000 [16:55:24<00:11,  1.15s/it]
+Chain 2: 100%|█████████▉| 49991/50000 [16:55:26<00:10,  1.15s/it]
+Chain 2: 100%|█████████▉| 49992/50000 [16:55:27<00:09,  1.16s/it]
+Chain 2: 100%|█████████▉| 49993/50000 [16:55:28<00:08,  1.16s/it]
+Chain 2: 100%|█████████▉| 49994/50000 [16:55:29<00:06,  1.15s/it]
+Chain 2: 100%|█████████▉| 49995/50000 [16:55:30<00:05,  1.15s/it]
+Chain 2: 100%|█████████▉| 49996/50000 [16:55:31<00:04,  1.15s/it]
+Chain 2: 100%|█████████▉| 49997/50000 [16:55:32<00:03,  1.15s/it]
+Chain 2: 100%|█████████▉| 49998/50000 [16:55:34<00:02,  1.16s/it]
+Chain 2: 100%|█████████▉| 49999/50000 [16:55:35<00:01,  1.16s/it]
+Chain 2: 100%|██████████| 50000/50000 [16:55:36<00:00,  1.15s/it]
+                                                                 /nfs/home/h18300744/anaconda3/envs/pymc/lib/python3.8/site-packages/arviz/utils.py:180: NumbaDeprecationWarning: The 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.
+  numba_fn = numba.jit(**self.kwargs)(self.function)
+/nfs/home/h18300744/anaconda3/envs/pymc/lib/python3.8/site-packages/arviz/utils.py:180: NumbaDeprecationWarning: The 'nopython' keyword argument was not supplied to the 'numba.jit' decorator. The implicit default value for this argument is currently False, but it will be changed to True in Numba 0.59.0. See https://numba.readthedocs.io/en/stable/reference/deprecation.html#deprecation-of-object-mode-fall-back-behaviour-when-using-jit for details.
+  numba_fn = numba.jit(**self.kwargs)(self.function)
+链 1: 接受率=0.06, LL均值=-60.6
+链 2: 接受率=0.06, LL均值=-60.0
+链 3: 接受率=0.05, LL均值=-59.9
+链 4: 接受率=0.07, LL均值=-65.3
+链 1: 接受率=0.06, LL均值=-60.6
+链 2: 接受率=0.06, LL均值=-60.0
+链 3: 接受率=0.05, LL均值=-59.9
+链 4: 接受率=0.07, LL均值=-65.3
+
+后验均值参数 — 链 1
+PRest         0.00147633
+PK                8.7794
+PL              0.301369
+Kbile           0.369688
+GFR           1.2655e-09
+Free            0.229243
+Vmax_baso        319.368
+Km_baso          238.898
+Kurine         0.0272207
+Kreab        0.000254523
+sigma            0.81891
+链 1 后验均值已保存 ➜ /nfs/home/h18300744/MTXmodel/saved_result/chain1_params.pkl
+
+后验均值参数 — 链 2
+PRest         0.00149659
+PK               29.5261
+PL              0.168848
+Kbile           0.742923
+GFR          1.36507e-12
+Free         0.000328013
+Vmax_baso        134.332
+Km_baso          48.6511
+Kurine         0.0299625
+Kreab        0.000649249
+sigma           0.814901
+链 2 后验均值已保存 ➜ /nfs/home/h18300744/MTXmodel/saved_result/chain2_params.pkl
+
+后验均值参数 — 链 3
+PRest        4.54543e-06
+PK               19.5767
+PL               4.77629
+Kbile         0.00921025
+GFR          6.24095e-10
+Free            0.142839
+Vmax_baso         88.514
+Km_baso          17.0019
+Kurine         0.0333825
+Kreab        0.000950764
+sigma           0.814444
+链 3 后验均值已保存 ➜ /nfs/home/h18300744/MTXmodel/saved_result/chain3_params.pkl
+
+后验均值参数 — 链 4
+PRest          0.0026164
+PK              0.215688
+PL              0.560815
+Kbile            9.84646
+GFR          4.53062e-10
+Free             68.8861
+Vmax_baso        3.36996
+Km_baso           1.7699
+Kurine         0.0129379
+Kreab           0.392392
+sigma           0.835531
+链 4 后验均值已保存 ➜ /nfs/home/h18300744/MTXmodel/saved_result/chain4_params.pkl
+
+=== ArviZ 收敛诊断 (R-hat 初判) ===
+               mean   r_hat  ess_bulk   ess_tail
+PRest        0.0014  2.0356    5.3474    11.9170
+PK          14.5245  2.0626    5.2991    11.7318
+PL           1.4518  1.7358    6.2140    16.6663
+Kbile        2.7421  2.5183    4.8000    15.8849
+GFR          0.0000  1.8631    5.7961    18.0487
+Free        17.3146  2.4227    4.8898    11.7383
+Vmax_baso  136.3960  2.1647    5.1864    27.0386
+Km_baso     76.5803  2.3193    4.9799    16.5165
+Kurine       0.0259  1.4703    7.8217    11.5129
+Kreab        0.0986  2.0983    5.2360    11.1551
+sigma        0.8209  1.0258  152.5839  4266.3910
+
+=== ArviZ 收敛诊断 ===
+               mean   r_hat  ess_bulk   ess_tail
+PRest        0.0014  2.0356    5.3474    11.9170
+PK          14.5245  2.0626    5.2991    11.7318
+PL           1.4518  1.7358    6.2140    16.6663
+Kbile        2.7421  2.5183    4.8000    15.8849
+GFR          0.0000  1.8631    5.7961    18.0487
+Free        17.3146  2.4227    4.8898    11.7383
+Vmax_baso  136.3960  2.1647    5.1864    27.0386
+Km_baso     76.5803  2.3193    4.9799    16.5165
+Kurine       0.0259  1.4703    7.8217    11.5129
+Kreab        0.0986  2.0983    5.2360    11.1551
+sigma        0.8209  1.0258  152.5839  4266.3910
+⚠️  存在 r_hat > 1.01，建议延长采样或调步长。
+
+🌟 已保存到 /nfs/home/h18300744/MTXmodel/saved_result/mcmc_params0620.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值       MCMC均值
+    PRest 3.421754e-04 1.398467e-03
+       PK 1.668563e+01 1.452447e+01
+       PL 5.808624e-01 1.451829e+00
+    Kbile 4.305343e-01 2.742069e+00
+      GFR 7.139828e-12 5.860052e-10
+     Free 9.579031e-01 1.731464e+01
+Vmax_baso 1.005487e+02 1.363960e+02
+  Km_baso 1.242041e+01 7.658032e+01
+   Kurine 4.392763e-01 2.587591e-02
+    Kreab 3.188709e-01 9.856155e-02
+    sigma 6.000000e-01 8.209465e-01
+
