@@ -48,7 +48,7 @@ def derivshiv(y, t, parms, R, T_total):
         + QL * y[1] / VL / PL
         - QPlas * y[0] / VPlas
         + Kreab * y[4]
-        + inp / VPlas
+        + inp #/ VPlas
     )
     dy[1] = QL * (y[0] / VPlas - y[1] / VL / PL) - Kbile * y[1]
     dy[2] = (
