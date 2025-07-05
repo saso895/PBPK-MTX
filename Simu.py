@@ -16,37 +16,11 @@ from tqdm import tqdm
 import pickle
 from scipy.integrate import odeint
 import pandas as pd
-from ode_core import derivshiv 
+from ode_core import derivshiv ,PK_model
 
 # --------------------------------------------------------------
-# 1. PBPK 方程 已导入
-
-# 药代动力学模型函数，用于参数拟合
-#TODO:传参顺序不对，把新版本的微分方程和model拷贝过来
-def pk_model(t, D_total, T_total, Duration,*param):
-    '''药代动力学模型函数，用于参数拟合'''
-    #print(f"params : {param}") 
-    # 计算注射速率
-    R = D_total / T_total
-    y0 = np.zeros(7)#(10e-6)+
-    # Specify time points to simulate
-    Time=np.arange(0, Duration + 0.1, 0.1)
-    # 调用 odeint 进行数值积分，传入微分方程 derivshiv 和初始条件 y0
-    y = odeint(
-        derivshiv, 
-        y0, 
-        Time, 
-        args=(param, R, T_total), 
-        #method='BDF',
-        rtol=1e-4,  # 放宽相对误差容忍度
-        atol=1e-7,  # 放宽绝对误差容忍度
-        h0=1e-5     # 设置初始步长
-    )
-    # y = odeint(derivshiv, y0, t, args=(params, R, T_total), rtol=1e-5, atol=1e-8)    
-    #return y[:, 0] / VPlas
-    CA = y[:, 0] / VPlas
-    results = np.column_stack((Time, CA))
-    return results
+# 1. PBPK 方程已导入
+# 2. simu 函数已导入
 
 ##############################--------原始参数 + modfit参数的拟合结果--------#################################################
 # 获取当前日期
@@ -88,7 +62,7 @@ with tqdm(range(len(time_points_train))) as ybar:
         T_total = timelen
         
         # 计算预测浓度
-        mu = pk_model(time_points, D_total, T_total,Duration, *params)
+        mu = PK_model(time_points, D_total, T_total,Duration, *params)
         y_mu.append(mu)  
 
 #save_path =f'saved_result/SimuData_{today_date}.pkl' 
