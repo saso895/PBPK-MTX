@@ -19,13 +19,10 @@ from matplotlib.lines import Line2D
 
 today_date = datetime.datetime.now().strftime('%Y-%m-%d')
 BASE_DIR   = 'saved_result'
+DATA_NAME  = 'simu01_init'
 #==========读入模拟数据
-with open(f'{BASE_DIR}\SA_simu2025-07-02.pkl', 'rb') as f:
-    y_chain1=pickle.load( f)
-    # if isinstance(load, dict):
-    #     y_chain1 = np.asarray(load['baseline'])   # 只取拟合好的 10 维参数
-    # else:
-    #     y_chain1 = np.asarray(load)[:10]          # 老文件格式, 前 10 项就是参数
+with open(f'{BASE_DIR}\{DATA_NAME}_{today_date}.pkl', 'rb') as f:
+    y_simu=pickle.load( f)
 
 ### --- 画图 --- ####
 with tqdm(range(len(time_points_train))) as pbar:
@@ -55,28 +52,21 @@ with tqdm(range(len(time_points_train))) as pbar:
         if len(time) < 2:              # 极端：只剩 1 个点 → 跳过该病人
             print(f"⚠️ 病人 {i+1} 仅剩 0 个有效点，已跳过")
             continue
-
-        chain1=y_chain1[i]
-
+        y=y_simu[i]
         # 在对应的子图上绘制散点和拟合曲线
         axes[i].scatter(time, concentration, label=f'训练数据 组 {i+1}', color='#E73235')    
-        axes[i].plot(chain1[:,0], chain1[:,1], label=f'chain1曲线 组 {i+1}', color='#fdd363',lw=1)
-        axes[i].plot(chain1[:,0], chain1[:,1]*0.8, '--', label='5%分位数', color='blue', alpha=0.6)
-        axes[i].plot(chain1[:,0], chain1[:,1]*1.2, '--', label='95%分位数', color='blue', alpha=0.6)          
-        # axes[i].plot(chain2[:,0], chain2[:,1], label=f'chain2拟合曲线 组 {i+1}', color='#5ca788')        
-        # axes[i].plot(chain3[:,0], chain3[:,1], label=f'chain3曲线 组 {i+1}', color='#227abc')
-        # axes[i].plot(chain4[:,0], chain4[:,1], label=f'chain4曲线 组 {i+1}', color='#b96d93')
-        # axes[i].plot(chain[:,0], chain[:,1], label=f'all曲线 组 {i+1}', color='#E73235')
-        # axes[i].plot(FITGA_y[:,0], FITGA_y[:,1], label=f'fitGA曲线 组 {i+1}', color='#9467bd')
+        axes[i].plot(y[:,0], y[:,1], label=f'预测曲线 组 {i+1}', color='#fdd363',lw=1)
+        axes[i].plot(y[:,0], y[:,1]*0.8, '--', label='5%分位数', color='blue', alpha=0.6)
+        axes[i].plot(y[:,0], y[:,1]*1.2, '--', label='95%分位数', color='blue', alpha=0.6)          
         axes[i].set_xlabel('时间 (小时)')
         axes[i].set_ylabel('药物浓度 (mg/L)')
         axes[i].set_title(f'药物浓度拟合 组 {i+1}')
         axes[i].legend()
         
-        # === 🟡 误差指标分析（chain1 为基准） =======================
+        # === 🟡 误差指标分析（y 为基准） =======================
         y_obs = concentration
-        # 使用插值将 chain1 预测值映射到观测时间点
-        y_pred = np.interp(time, chain1[:, 0], chain1[:, 1])
+        # 使用插值将 y 预测值映射到观测时间点
+        y_pred = np.interp(time, y[:, 0], y[:, 1])
         y_5 = y_pred * 0.8
         y_95 = y_pred * 1.2
         fold_err = y_pred / y_obs
@@ -111,7 +101,7 @@ with tqdm(range(len(time_points_train))) as pbar:
 plt.tight_layout()
 
 # === 保存拟合图 ==================================================
-save_path =f'{BASE_DIR}/Simuplot_{today_date}_95.svg'
+save_path =f'{BASE_DIR}/Simuplot01_{today_date}.svg'
 plt.savefig(save_path, format='svg')
 plt.show()
 
@@ -150,7 +140,7 @@ plt.close()
 print(f"✅ 热图已保存: {heatmap_path}")
 
 # ③   保存 good 病人 ID 清单                # === NEW ===
-good_id_path = f'{BASE_DIR}result/good_patient_ids_{today_date}.txt'
+good_id_path = f'{BASE_DIR}/good_patient_ids_{today_date}.txt'
 with open(good_id_path, 'w', encoding='utf-8') as f:
     f.write(','.join(map(str, good_ids)))
 print(f"✅ good 病人 ID 已保存: {good_id_path}")

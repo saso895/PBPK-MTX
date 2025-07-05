@@ -3,12 +3,7 @@ import datetime
 from scipy.optimize import minimize
 import os
 from functools import partial
-from init_param import init_pars
 import numpy as np
-from init_param import QRest, QK, QL, QPlas, VRest, VK, VL, VPlas
-#import pymc3 as pm
-#print(pm.__file__)
-import arviz as az
 from init_data_point4 import df,time_points_train, concentration_data_train, input_dose_train, inject_timelen_train
 #dosing_time_train,rate_data_train
 import time
@@ -17,56 +12,92 @@ import pickle
 from scipy.integrate import odeint
 import pandas as pd
 from ode_core import derivshiv ,PK_model
+from init_param import (            # 原始生理参数
+    init_pars,                      # ← 10-dim ndarray
+    QRest, QK, QL, QPlas, VRest, VK, VL, VPlas
+)
+# 获取当前日期
+today_date = datetime.datetime.now().strftime('%Y-%m-%d')
 
 # --------------------------------------------------------------
 # 1. PBPK 方程已导入
 # 2. simu 函数已导入
+# --------------------------------------------------------------
+# 3. 灵活的参数导入函数
+def load_parameters(source="init", file_path=None, idx=None):
+    """
+    Parameters
+    ----------
+    source : {"init", "modfit", "mcmc", "file"}
+        选择参数来源
+    file_path : str or None
+        当 source 为 "file" / "modfit" / "mcmc" 时的 pkl 路径
+    idx : int or None
+        当 pkl 文件里包含多条链 (dict) 时，可指定取第几条
+    Returns
+    -------
+    list
+        10-维参数列表，可直接 *params 解包
+    """
+    if source == "init":
+        return list(init_pars.values())[:10]
 
-##############################--------原始参数 + modfit参数的拟合结果--------#################################################
-# 获取当前日期
-today_date = datetime.datetime.now().strftime('%Y-%m-%d')
+    if file_path is None:
+        raise ValueError("source=%s 需要提供 file_path" % source)
+
+    with open(file_path, "rb") as f:
+        loaded = pickle.load(f)
+
+    # ----- modfit: 通常是 ndarray (10,) 或 dict{'baseline':...}
+    if source == "modfit":
+        if isinstance(loaded, dict):
+            loaded = loaded.get("baseline", loaded.get("params"))
+        return np.asarray(loaded)[:10].tolist()
+
+    # ----- mcmc: 通常是 ndarray(11,) 或 chain_dict
+    if source == "mcmc":
+        if isinstance(loaded, dict):         # 多链 dict
+            if idx is None:
+                idx = 1
+            key = f"chain{idx}_params" if f"chain{idx}_params" in loaded else list(loaded.keys())[0]
+            loaded = loaded[key]
+        return np.asarray(loaded)[:10].tolist()
+
+    # ----- 任意手动文件
+    if source == "file":
+        return np.asarray(loaded)[:10].tolist()
+
+    raise ValueError("未知 source：%s" % source)
+# --------------------------------------------------------------
+# 4. 浓度的拟合结果保存
 # 定义保存路径
-#save_dir = f'saved_result/{today_date}'
-#os.makedirs(save_dir, exist_ok=True)  # 如果文件夹已存在，则不会报错、
+save_dir = f'saved_result'
 with tqdm(range(len(time_points_train))) as ybar:
     
-    #with open('saved_result/optimized_params0528_Powell.pkl', 'rb') as f:
-    #    params = pickle.load(f)
-    # === ⬇️ 载入 0606 最优参数向量（完整 10 维）======================
-    with open('207result\chain1_params.pkl', 'rb') as f:#saved_result/
-        saved = pickle.load(f)              # 读回 dict
-        saved = saved[:10] 
-    #baseline = saved 
-    #baseline = saved['baseline']            # numpy.ndarray (10,)
-    if isinstance(saved, dict):
-        # 通常你之前保存的是 {'baseline': ndarray, ...}
-        baseline = np.asarray(saved.get('baseline',      # 首选键
-                                        saved.get('params')))  # 备选键
-    else:
-        baseline = np.asarray(saved)  
-    params   = baseline.tolist()            # 转成普通 list，以免 *params 时出 warning
-    # ================================================================
-
+### >>> 选择参数来源
+    PARAM_SOURCE = "init"          # {"init","modfit","mcmc","file"}
+    PARAM_FILE   = "207result/chain1_params.pkl"   # ← 自行修改路径
+    CHAIN_IDX    = 1               # mcmc 多链时选第几链  
+    params = load_parameters(PARAM_SOURCE)   
+### >>> 预测浓度
     # 创建一个列表来存储每个病人的观测变量
     y_mu = []
     #y_obs = []
     for i in ybar:
-    # for i in tqdm(range(len(time_points_train))):
-        # pars.append(params)
         Duration= time_points_train[i][-1]
         time_points = time_points_train[i]
         concentration = concentration_data_train[i]+(10e-6)
         dose = input_dose_train[i]
         timelen = inject_timelen_train[i]
         D_total = dose
-        T_total = timelen
-        
+        T_total = timelen        
         # 计算预测浓度
         mu = PK_model(time_points, D_total, T_total,Duration, *params)
-        y_mu.append(mu)  
+        y_mu.append(mu)
+        if i == 0:                                    # 只打印第一个病例就够对比
+            print(f"Cmax (case 1) = {mu[:,1].max():.3f} µmol/L")  
 
-#save_path =f'saved_result/SimuData_{today_date}.pkl' 
-save_path =f'207result/chain1_0620_207.pkl' 
+save_path =f'{save_dir}/simu01_{PARAM_SOURCE}_{today_date}.pkl' 
 with open(save_path, 'wb') as f:
     pickle.dump(y_mu, f)
 
