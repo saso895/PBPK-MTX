@@ -1,0 +1,467 @@
+nohup: 忽略输入
+训练集长度: 51
+测试集长度: 22
+
+Chain 2:   0%|          | 0/400000 [00:00<?, ?it/s]
+Chain 3:   0%|          | 0/400000 [00:00<?, ?it/s]
+Chain 1:   0%|          | 0/400000 [00:00<?, ?it/s]
+Chain 4:   0%|          | 0/400000 [00:00<?, ?it/s]
+
+Chain 3: 100%|█████████▉| 399967/400000 [75:29:21<00:21,  1.56it/s]
+Chain 3: 100%|█████████▉| 399968/400000 [75:29:22<00:20,  1.56it/s]
+Chain 3: 100%|█████████▉| 399969/400000 [75:29:22<00:19,  1.57it/s]
+Chain 3: 100%|█████████▉| 399970/400000 [75:29:23<00:19,  1.56it/s]
+Chain 3: 100%|█████████▉| 399971/400000 [75:29:24<00:18,  1.56it/s]
+Chain 3: 100%|█████████▉| 399972/400000 [75:29:24<00:17,  1.56it/s]
+Chain 3: 100%|█████████▉| 399973/400000 [75:29:25<00:17,  1.56it/s]
+Chain 3: 100%|█████████▉| 399974/400000 [75:29:26<00:16,  1.56it/s]
+Chain 3: 100%|█████████▉| 399975/400000 [75:29:26<00:15,  1.57it/s]
+Chain 3: 100%|█████████▉| 399976/400000 [75:29:27<00:15,  1.57it/s]
+Chain 3: 100%|█████████▉| 399977/400000 [75:29:28<00:14,  1.57it/s]
+Chain 3: 100%|█████████▉| 399978/400000 [75:29:28<00:14,  1.57it/s]
+Chain 3: 100%|█████████▉| 399979/400000 [75:29:29<00:13,  1.56it/s]
+Chain 3: 100%|█████████▉| 399980/400000 [75:29:29<00:12,  1.56it/s]
+Chain 3: 100%|█████████▉| 399981/400000 [75:29:30<00:12,  1.56it/s]
+Chain 3: 100%|█████████▉| 399982/400000 [75:29:31<00:11,  1.57it/s]
+Chain 3: 100%|█████████▉| 399983/400000 [75:29:31<00:10,  1.57it/s]
+Chain 3: 100%|█████████▉| 399984/400000 [75:29:32<00:10,  1.57it/s]
+Chain 3: 100%|█████████▉| 399985/400000 [75:29:33<00:09,  1.57it/s]
+Chain 3: 100%|█████████▉| 399986/400000 [75:29:33<00:08,  1.57it/s]
+Chain 3: 100%|█████████▉| 399987/400000 [75:29:34<00:08,  1.57it/s]
+Chain 3: 100%|█████████▉| 399988/400000 [75:29:35<00:07,  1.57it/s]
+Chain 3: 100%|█████████▉| 399989/400000 [75:29:35<00:06,  1.57it/s]
+Chain 3: 100%|█████████▉| 399990/400000 [75:29:36<00:06,  1.57it/s]
+Chain 3: 100%|█████████▉| 399991/400000 [75:29:36<00:05,  1.57it/s]
+Chain 3: 100%|█████████▉| 399992/400000 [75:29:37<00:05,  1.56it/s]
+Chain 3: 100%|█████████▉| 399993/400000 [75:29:38<00:04,  1.56it/s]
+Chain 3: 100%|█████████▉| 399994/400000 [75:29:38<00:03,  1.56it/s]
+Chain 3: 100%|█████████▉| 399995/400000 [75:29:39<00:03,  1.57it/s]
+Chain 3: 100%|█████████▉| 399996/400000 [75:29:40<00:02,  1.56it/s]
+Chain 3: 100%|█████████▉| 399997/400000 [75:29:40<00:01,  1.56it/s]
+Chain 3: 100%|█████████▉| 399998/400000 [75:29:41<00:01,  1.56it/s]
+Chain 3: 100%|█████████▉| 399999/400000 [75:29:42<00:00,  1.56it/s]
+Chain 3: 100%|██████████| 400000/400000 [75:29:42<00:00,  1.56it/s]
+                                                                   
+链 1: 接受率=0.24, LL均值=-60.7
+链 2: 接受率=0.25, LL均值=-61.4
+链 3: 接受率=0.23, LL均值=-60.1
+链 4: 接受率=0.25, LL均值=-60.9
+链 1: 接受率=0.24, LL均值=-60.7
+链 2: 接受率=0.25, LL均值=-61.4
+链 3: 接受率=0.23, LL均值=-60.1
+链 4: 接受率=0.25, LL均值=-60.9
+
+采样完成，各链接受率: [0.2354025, 0.2463175, 0.230805, 0.2452075]
+链 1 后验样本已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/chain1_draws2025-06-30.pkl
+
+后验均值参数 — 链 1
+PRest          0.0458337
+PK              0.728392
+PL               1.05907
+Kbile           0.184332
+GFR            0.0542296
+Free             73.3357
+Vmax_baso        868.549
+Km_baso          748.053
+Kurine         0.0288668
+Kreab         0.00121966
+sigma           0.819352
+链 1 后验均值已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/chain1_params2025-06-30.pkl
+链 2 后验样本已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/chain2_draws2025-06-30.pkl
+
+后验均值参数 — 链 2
+PRest          0.0210754
+PK               2.17083
+PL              0.139119
+Kbile            203.049
+GFR          5.02067e-11
+Free          0.00744242
+Vmax_baso        959.877
+Km_baso          882.582
+Kurine         0.0279365
+Kreab         0.00071236
+sigma           0.820896
+链 2 后验均值已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/chain2_params2025-06-30.pkl
+链 3 后验样本已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/chain3_draws2025-06-30.pkl
+
+后验均值参数 — 链 3
+PRest        7.17906e-09
+PK               9.35992
+PL               1.48162
+Kbile         0.00210534
+GFR          6.91734e-06
+Free         3.38572e+06
+Vmax_baso        247.284
+Km_baso          134.986
+Kurine           0.02832
+Kreab        0.000327697
+sigma            0.81555
+链 3 后验均值已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/chain3_params2025-06-30.pkl
+链 4 后验样本已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/chain4_draws2025-06-30.pkl
+
+后验均值参数 — 链 4
+PRest          0.0715229
+PK               2.29114
+PL           0.000303438
+Kbile            5145.07
+GFR          2.11467e-11
+Free             313.848
+Vmax_baso        579.453
+Km_baso          603.296
+Kurine         0.0283133
+Kreab        0.000444375
+sigma           0.819502
+链 4 后验均值已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/chain4_params2025-06-30.pkl
+
+📊 迭代 50,000:  max r̂=2.865,  min ESS=5
+
+✅ 诊断表已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/mcmc_diag_2025-06-30.xlsx
+
+🌟 已保存到 /nfs/home/y18300744/MTXmodel/saved_result/mcmc_params2025-06-30.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值        MCMC均值
+    PRest 3.421754e-04      0.034608
+       PK 1.668563e+01      3.637573
+       PL 5.808624e-01      0.670029
+    Kbile 4.305343e-01   1337.076166
+      GFR 7.139828e-12      0.013559
+     Free 9.579031e-01 846526.980391
+Vmax_baso 1.005487e+02    663.790843
+  Km_baso 1.242041e+01    592.229279
+   Kurine 4.392763e-01      0.028359
+    Kreab 3.188709e-01      0.000676
+    sigma 6.000000e-01      0.818825
+
+=== R-hat / ESS (post burn-in) ===
+           r_hat  ess_bulk  ess_tail
+PRest       2.16       5.0      18.0
+PK          1.29      10.0      28.0
+PL          1.59       7.0      19.0
+Kbile       2.25       5.0      23.0
+GFR         1.87       6.0      12.0
+Free        2.44       5.0      11.0
+Vmax_baso   1.20      15.0      20.0
+Km_baso     1.30      11.0      13.0
+Kurine      1.02     305.0     404.0
+Kreab       1.10      30.0      36.0
+sigma       1.00    6769.0    6889.0
+
+📑 诊断已保存到 /nfs/home/y18300744/MTXmodel/saved_result/rhat_ess_2025-06-30.csv
+
+📊 迭代 100,000:  max r̂=2.684,  min ESS=5
+
+✅ 诊断表已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/mcmc_diag_2025-06-30.xlsx
+
+🌟 已保存到 /nfs/home/y18300744/MTXmodel/saved_result/mcmc_params2025-06-30.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值        MCMC均值
+    PRest 3.421754e-04      0.034608
+       PK 1.668563e+01      3.637573
+       PL 5.808624e-01      0.670029
+    Kbile 4.305343e-01   1337.076166
+      GFR 7.139828e-12      0.013559
+     Free 9.579031e-01 846526.980391
+Vmax_baso 1.005487e+02    663.790843
+  Km_baso 1.242041e+01    592.229279
+   Kurine 4.392763e-01      0.028359
+    Kreab 3.188709e-01      0.000676
+    sigma 6.000000e-01      0.818825
+
+=== R-hat / ESS (post burn-in) ===
+           r_hat  ess_bulk  ess_tail
+PRest       2.16       5.0      18.0
+PK          1.29      10.0      28.0
+PL          1.59       7.0      19.0
+Kbile       2.25       5.0      23.0
+GFR         1.87       6.0      12.0
+Free        2.44       5.0      11.0
+Vmax_baso   1.20      15.0      20.0
+Km_baso     1.30      11.0      13.0
+Kurine      1.02     305.0     404.0
+Kreab       1.10      30.0      36.0
+sigma       1.00    6769.0    6889.0
+
+📑 诊断已保存到 /nfs/home/y18300744/MTXmodel/saved_result/rhat_ess_2025-06-30.csv
+
+📊 迭代 150,000:  max r̂=2.743,  min ESS=5
+
+✅ 诊断表已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/mcmc_diag_2025-06-30.xlsx
+
+🌟 已保存到 /nfs/home/y18300744/MTXmodel/saved_result/mcmc_params2025-06-30.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值        MCMC均值
+    PRest 3.421754e-04      0.034608
+       PK 1.668563e+01      3.637573
+       PL 5.808624e-01      0.670029
+    Kbile 4.305343e-01   1337.076166
+      GFR 7.139828e-12      0.013559
+     Free 9.579031e-01 846526.980391
+Vmax_baso 1.005487e+02    663.790843
+  Km_baso 1.242041e+01    592.229279
+   Kurine 4.392763e-01      0.028359
+    Kreab 3.188709e-01      0.000676
+    sigma 6.000000e-01      0.818825
+
+=== R-hat / ESS (post burn-in) ===
+           r_hat  ess_bulk  ess_tail
+PRest       2.16       5.0      18.0
+PK          1.29      10.0      28.0
+PL          1.59       7.0      19.0
+Kbile       2.25       5.0      23.0
+GFR         1.87       6.0      12.0
+Free        2.44       5.0      11.0
+Vmax_baso   1.20      15.0      20.0
+Km_baso     1.30      11.0      13.0
+Kurine      1.02     305.0     404.0
+Kreab       1.10      30.0      36.0
+sigma       1.00    6769.0    6889.0
+
+📑 诊断已保存到 /nfs/home/y18300744/MTXmodel/saved_result/rhat_ess_2025-06-30.csv
+
+📊 迭代 200,000:  max r̂=2.594,  min ESS=5
+
+✅ 诊断表已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/mcmc_diag_2025-06-30.xlsx
+
+🌟 已保存到 /nfs/home/y18300744/MTXmodel/saved_result/mcmc_params2025-06-30.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值        MCMC均值
+    PRest 3.421754e-04      0.034608
+       PK 1.668563e+01      3.637573
+       PL 5.808624e-01      0.670029
+    Kbile 4.305343e-01   1337.076166
+      GFR 7.139828e-12      0.013559
+     Free 9.579031e-01 846526.980391
+Vmax_baso 1.005487e+02    663.790843
+  Km_baso 1.242041e+01    592.229279
+   Kurine 4.392763e-01      0.028359
+    Kreab 3.188709e-01      0.000676
+    sigma 6.000000e-01      0.818825
+
+=== R-hat / ESS (post burn-in) ===
+           r_hat  ess_bulk  ess_tail
+PRest       2.16       5.0      18.0
+PK          1.29      10.0      28.0
+PL          1.59       7.0      19.0
+Kbile       2.25       5.0      23.0
+GFR         1.87       6.0      12.0
+Free        2.44       5.0      11.0
+Vmax_baso   1.20      15.0      20.0
+Km_baso     1.30      11.0      13.0
+Kurine      1.02     305.0     404.0
+Kreab       1.10      30.0      36.0
+sigma       1.00    6769.0    6889.0
+
+📑 诊断已保存到 /nfs/home/y18300744/MTXmodel/saved_result/rhat_ess_2025-06-30.csv
+
+📊 迭代 250,000:  max r̂=2.320,  min ESS=5
+
+✅ 诊断表已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/mcmc_diag_2025-06-30.xlsx
+
+🌟 已保存到 /nfs/home/y18300744/MTXmodel/saved_result/mcmc_params2025-06-30.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值        MCMC均值
+    PRest 3.421754e-04      0.034608
+       PK 1.668563e+01      3.637573
+       PL 5.808624e-01      0.670029
+    Kbile 4.305343e-01   1337.076166
+      GFR 7.139828e-12      0.013559
+     Free 9.579031e-01 846526.980391
+Vmax_baso 1.005487e+02    663.790843
+  Km_baso 1.242041e+01    592.229279
+   Kurine 4.392763e-01      0.028359
+    Kreab 3.188709e-01      0.000676
+    sigma 6.000000e-01      0.818825
+
+=== R-hat / ESS (post burn-in) ===
+           r_hat  ess_bulk  ess_tail
+PRest       2.16       5.0      18.0
+PK          1.29      10.0      28.0
+PL          1.59       7.0      19.0
+Kbile       2.25       5.0      23.0
+GFR         1.87       6.0      12.0
+Free        2.44       5.0      11.0
+Vmax_baso   1.20      15.0      20.0
+Km_baso     1.30      11.0      13.0
+Kurine      1.02     305.0     404.0
+Kreab       1.10      30.0      36.0
+sigma       1.00    6769.0    6889.0
+
+📑 诊断已保存到 /nfs/home/y18300744/MTXmodel/saved_result/rhat_ess_2025-06-30.csv
+
+📊 迭代 300,000:  max r̂=2.188,  min ESS=5
+
+✅ 诊断表已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/mcmc_diag_2025-06-30.xlsx
+
+🌟 已保存到 /nfs/home/y18300744/MTXmodel/saved_result/mcmc_params2025-06-30.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值        MCMC均值
+    PRest 3.421754e-04      0.034608
+       PK 1.668563e+01      3.637573
+       PL 5.808624e-01      0.670029
+    Kbile 4.305343e-01   1337.076166
+      GFR 7.139828e-12      0.013559
+     Free 9.579031e-01 846526.980391
+Vmax_baso 1.005487e+02    663.790843
+  Km_baso 1.242041e+01    592.229279
+   Kurine 4.392763e-01      0.028359
+    Kreab 3.188709e-01      0.000676
+    sigma 6.000000e-01      0.818825
+
+=== R-hat / ESS (post burn-in) ===
+           r_hat  ess_bulk  ess_tail
+PRest       2.16       5.0      18.0
+PK          1.29      10.0      28.0
+PL          1.59       7.0      19.0
+Kbile       2.25       5.0      23.0
+GFR         1.87       6.0      12.0
+Free        2.44       5.0      11.0
+Vmax_baso   1.20      15.0      20.0
+Km_baso     1.30      11.0      13.0
+Kurine      1.02     305.0     404.0
+Kreab       1.10      30.0      36.0
+sigma       1.00    6769.0    6889.0
+
+📑 诊断已保存到 /nfs/home/y18300744/MTXmodel/saved_result/rhat_ess_2025-06-30.csv
+
+📊 迭代 350,000:  max r̂=2.377,  min ESS=5
+
+✅ 诊断表已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/mcmc_diag_2025-06-30.xlsx
+
+🌟 已保存到 /nfs/home/y18300744/MTXmodel/saved_result/mcmc_params2025-06-30.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值        MCMC均值
+    PRest 3.421754e-04      0.034608
+       PK 1.668563e+01      3.637573
+       PL 5.808624e-01      0.670029
+    Kbile 4.305343e-01   1337.076166
+      GFR 7.139828e-12      0.013559
+     Free 9.579031e-01 846526.980391
+Vmax_baso 1.005487e+02    663.790843
+  Km_baso 1.242041e+01    592.229279
+   Kurine 4.392763e-01      0.028359
+    Kreab 3.188709e-01      0.000676
+    sigma 6.000000e-01      0.818825
+
+=== R-hat / ESS (post burn-in) ===
+           r_hat  ess_bulk  ess_tail
+PRest       2.16       5.0      18.0
+PK          1.29      10.0      28.0
+PL          1.59       7.0      19.0
+Kbile       2.25       5.0      23.0
+GFR         1.87       6.0      12.0
+Free        2.44       5.0      11.0
+Vmax_baso   1.20      15.0      20.0
+Km_baso     1.30      11.0      13.0
+Kurine      1.02     305.0     404.0
+Kreab       1.10      30.0      36.0
+sigma       1.00    6769.0    6889.0
+
+📑 诊断已保存到 /nfs/home/y18300744/MTXmodel/saved_result/rhat_ess_2025-06-30.csv
+
+📊 迭代 400,000:  max r̂=2.328,  min ESS=5
+
+✅ 诊断表已保存 ➜ /nfs/home/y18300744/MTXmodel/saved_result/mcmc_diag_2025-06-30.xlsx
+
+🌟 已保存到 /nfs/home/y18300744/MTXmodel/saved_result/mcmc_params2025-06-30.pkl
+
+=== 🏆 最终优化参数对比（MCMC）🏆 ===
+       参数        初始参数值        MCMC均值
+    PRest 3.421754e-04      0.034608
+       PK 1.668563e+01      3.637573
+       PL 5.808624e-01      0.670029
+    Kbile 4.305343e-01   1337.076166
+      GFR 7.139828e-12      0.013559
+     Free 9.579031e-01 846526.980391
+Vmax_baso 1.005487e+02    663.790843
+  Km_baso 1.242041e+01    592.229279
+   Kurine 4.392763e-01      0.028359
+    Kreab 3.188709e-01      0.000676
+    sigma 6.000000e-01      0.818825
+
+=== R-hat / ESS (post burn-in) ===
+           r_hat  ess_bulk  ess_tail
+PRest       2.16       5.0      18.0
+PK          1.29      10.0      28.0
+PL          1.59       7.0      19.0
+Kbile       2.25       5.0      23.0
+GFR         1.87       6.0      12.0
+Free        2.44       5.0      11.0
+Vmax_baso   1.20      15.0      20.0
+Km_baso     1.30      11.0      13.0
+Kurine      1.02     305.0     404.0
+Kreab       1.10      30.0      36.0
+sigma       1.00    6769.0    6889.0
+
+📑 诊断已保存到 /nfs/home/y18300744/MTXmodel/saved_result/rhat_ess_2025-06-30.csv
+💾 已保存 ckpt_chain3_100000.pkl
+💾 已保存 ckpt_chain3_200000.pkl
+💾 已保存 ckpt_chain3_300000.pkl
+💾 已保存 ckpt_chain3_400000.pkl
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t (=r1) and step size h (=r2), the      
+       corrector convergence failed repeatedly       
+       or with abs(h) = hmin    l
+      in above,  r1 =  0.1531287064803D-10   r2 =  0.1140897769334D-18
+ lsoda--  at t(=r1) and step size h(=r2), the error  
+       test failed repeatedly or with abs(h) = hmin  
+      in above,  r1 =  0.3187316890839D+01   r2 =  0.1986467281860D-08

@@ -109,9 +109,9 @@ checkpoint_int = 100000          # ★★ 新：每 1万 步存一次 ckpt
 resume_path    = ""              # ★★ 新：空字串=不续跑；填路径即续
 jit_scale = 0.05        # <-- 初始抖动幅度 (log 空间±5 %)
 step_report = 50000
-n_iter   = 800000      # 总迭代
-burn_in  = 100000       # 丢弃前 burn_in
-thin     = 100          # 每 thin 取一次，减少自相关
+n_iter   = 400000      # 总迭代
+burn_in  = 40000       # 丢弃前 burn_in
+thin     = 200          # 每 thin 取一次，减少自相关
 rng = np.random.default_rng(seed=20240630)
 n_chain = 4
 

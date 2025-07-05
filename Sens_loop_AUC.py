@@ -67,7 +67,7 @@ def derivshiv(y, t, parms, R, T_total):
         + QL * y[1] / VL / PL
         - QPlas * y[0] / VPlas
         + Kreab * y[4]
-        + inp / VPlas
+        + inp #/ VPlas
     )
     dy[1] = QL * (y[0] / VPlas - y[1] / VL / PL) - Kbile * y[1]
     dy[2] = (
@@ -118,7 +118,7 @@ for outer in range(max_outer):
         out = []
         for tt, d, ti in zip(time_groups, dose_groups, tinf_groups):
             out.extend(FIT_model(tt, d, ti, *theta_vec))
-        return np.asarray(out)             # (n_out,)
+        return np.asarray(out) 
     
     print("\n=== Step-1  Morris 全局灵敏度 (SALib) ===")
 
@@ -160,22 +160,17 @@ for outer in range(max_outer):
     Y_full = np.array([model_eval(row) for row in tqdm(X)])   # (1200, M)
 
     # ★★★ 关键改动：把多输出压缩成一维标量 ★★★
-    #Y_scalar = np.sqrt(np.mean(Y_full**2, axis=1))            # (1200, )
+# === MOD BEGIN Step-1 指标对齐（AUC → log-RMSE） ====================
+    # ① 把观测浓度展平成一维
+    obs_flat = np.concatenate(conc_groups)                       # (M,)
+    obs_clip  = np.clip(obs_flat, 1e-9, None)
+    # ② 对每条采样的预测曲线计算 log10-RMSE
+    pred_flat = Y_full.reshape(Y_full.shape[0], -1) 
+    pred_clip = np.clip(pred_flat, 1e-9, None)             # (N, M)
+    log_err   = np.log10(pred_clip  + 1e-9) - np.log10(obs_clip)  # 避免 log(0)
+    Y_scalar  = np.sqrt(np.mean(log_err**2, axis=1))             # (N,)
 
-# === AUC 聚合指标（替换 RMSE）===
-    def _calc_auc_segment(y, t):
-        return np.trapz(y, t)
-
-    auc_list = []
-    for yi in Y_full:
-        auc_total = 0.0
-        idx = 0
-        for tt in time_groups:
-            nt = len(tt)
-            auc_total += _calc_auc_segment(yi[idx:idx+nt], tt)
-            idx += nt
-        auc_list.append(auc_total)
-    Y_scalar = np.array(auc_list)
+# === MOD END Step-1 ===================================================
 
     # *1.4* Morris 分析：对每个 time-point 取均方根后再汇总
     Si = morris_analyze.analyze(problem, X, Y_scalar, 
@@ -190,7 +185,7 @@ for outer in range(max_outer):
         'mu_star': mu_star,
         'sigma'  : sigma
     })
-    gsa_df.to_csv('morris_result.csv', index=False)
+    gsa_df.to_csv(f'saved_result/morris_result{today_date}.csv', index=False)
     print(gsa_df.sort_values('mu_star', ascending=False))
 
     infl_mask = mu_star >= 0.1
@@ -327,8 +322,13 @@ for outer in range(max_outer):
         for t, d, tinf, obs,sc in zip(                  # 同时遍历每条给药实验：
                 time_groups, dose_groups,               #  ├─ t     → 采样时间点数组
                 tinf_groups, conc_groups,sc_groups):    #  ├─ d,tinf→ 剂量与输注时长
-            res.extend((FIT_model(t, d, tinf, *full)    #     预测浓度曲线
-                    - obs)/sc)                       #   − 实测浓度 → 残差
+            pred = FIT_model(t, d, tinf, *full)
+            # === MOD BEGIN ② clip 残差 ===================================
+            pred_clip = np.clip(pred, 1e-9, None)
+            obs_clip  = np.clip(obs,  1e-9, None)
+            res.extend((np.log10(pred_clip) - np.log10(obs_clip)) / sc)
+# === MOD END =================================================
+            #res.extend((np.log10(pred + 1e-9) - np.log10(obs)) / sc)
         return np.asarray(res)                          # 返回 1-D 残差向量 (拼接所有实验)
 
     lb = np.zeros(len(subset_idx))        # 各参数下界 0（不可负）

@@ -16,24 +16,11 @@ from tqdm import tqdm
 import pickle
 from scipy.integrate import odeint
 import pandas as pd
+from ode_core import derivshiv 
 
-def derivshiv(y, t, parms, R, T_total):
-    '''定义微分方程的函数，包含药物点滴输入'''
-    
-    PRest, PK, PL, Kbile, GFR, Free, Vmax_baso, Km_baso, Kurine, Kreab = parms
-    # 确保 input_rate 是标量
-    input_rate = R if t <= T_total else 0
+# --------------------------------------------------------------
+# 1. PBPK 方程 已导入
 
-    ydot = np.zeros(7)
-    ydot[0] = (QRest * y[3] / VRest / PRest) + (QK * y[2] / VK / PK) + (QL * y[1] / VL / PL) - (QPlas * y[0] / VPlas) + Kreab * y[4] + input_rate / VPlas
-    ydot[1] = QL * (y[0] / VPlas - y[1] / VL / PL) - Kbile * y[1]
-    ydot[2] = QK * (y[0] / VPlas - y[2] / VK / PK) - y[0] / VPlas * GFR * Free - (Vmax_baso * y[2] / VK / PK) / (Km_baso + y[2] / VK / PK)
-    ydot[3] = QRest * (y[0] / VPlas - y[3] / VRest / PRest)
-    ydot[4] = y[0] / VPlas * GFR * Free + (Vmax_baso * y[2] / VK / PK) / (Km_baso + y[2] / VK / PK) - y[4] * Kurine - Kreab * y[4]
-    ydot[5] = Kurine * y[4]
-    ydot[6] = Kbile * y[1]
-
-    return ydot
 # 药代动力学模型函数，用于参数拟合
 #TODO:传参顺序不对，把新版本的微分方程和model拷贝过来
 def pk_model(t, D_total, T_total, Duration,*param):
