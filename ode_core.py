@@ -35,6 +35,14 @@ baseline_init = np.array([
     Free,  Vmax_baso, Km_baso, Kurine, Kreab,
 ], dtype=float)
 
+# ---------- 对数 <-> 线性 ----------
+def log_normalize(p):          # 取对数
+    return np.log(np.asarray(p, dtype=float))
+
+def exp_denormalize(lp):       # 反对数
+    return np.exp(np.asarray(lp, dtype=float))
+
+
 # --------------------------------------------------------------
 # 1. PBPK 微分方程
 # --------------------------------------------------------------
