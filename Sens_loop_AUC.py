@@ -22,7 +22,7 @@ from numpy.random import default_rng
 import numpy as np 
 import os,pickle,datetime
 from tqdm import tqdm
-
+from ode_core import derivshiv ,PK_model,FIT_model
 # >>> MOD 0 : 新增 SALib 依赖
 from SALib.sample import morris as morris_sample
 from SALib.analyze import morris as morris_analyze
@@ -53,49 +53,9 @@ baseline_init = np.array([
     PRest, PK, PL, Kbile, GFR,
     Free,  Vmax_baso, Km_baso, Kurine, Kreab,
 ], dtype=float)
-LOCKED = ["Km_baso"] 
+LOCKED = [ ] 
 # --------------------------------------------------------------
-# 1. PBPK 方程 & 模拟函数
-# --------------------------------------------------------------
-def derivshiv(y, t, parms, R, T_total):
-    PRest, PK, PL, Kbile, GFR, Free, Vmax_baso, Km_baso, Kurine, Kreab = parms
-    inp = R if t <= T_total else 0
-    dy  = np.zeros(7)
-    dy[0] = (
-        QRest * y[3] / VRest / PRest
-        + QK * y[2] / VK / PK
-        + QL * y[1] / VL / PL
-        - QPlas * y[0] / VPlas
-        + Kreab * y[4]
-        + inp #/ VPlas
-    )
-    dy[1] = QL * (y[0] / VPlas - y[1] / VL / PL) - Kbile * y[1]
-    dy[2] = (
-        QK * (y[0] / VPlas - y[2] / VK / PK)
-        - y[0] / VPlas * GFR * Free
-        - (Vmax_baso * y[2] / VK / PK) / (Km_baso + y[2] / VK / PK)
-    )
-    dy[3] = QRest * (y[0] / VPlas - y[3] / VRest / PRest)
-    dy[4] = (
-        y[0] / VPlas * GFR * Free
-        + (Vmax_baso * y[2] / VK / PK) / (Km_baso + y[2] / VK / PK)
-        - y[4] * Kurine
-        - Kreab * y[4]
-    )
-    dy[5] = Kurine * y[4]
-    dy[6] = Kbile * y[1]
-    return dy
-
-def FIT_model(t, dose, tinf, *params):
-    R = dose / tinf
-    y0 = np.zeros(7)
-    sol = odeint(
-        derivshiv, y0, t,
-        args=(params, R, tinf),
-        rtol=1e-6, atol=1e-9, h0=0.1,
-    )
-    return sol[:, 0] / VPlas   # 血浆浓度
-
+# 1. PBPK 方程 & 模拟函数 已导入
 # =======================================================================
 # 🔄 外层循环：重复 Step-1 ~ Step-6 直到子集稳定 & γ_max ≤ 阈值
 # =======================================================================
@@ -192,7 +152,6 @@ for outer in range(max_outer):
     param_ids = np.where(infl_mask)[0]
 
     # === NEW：锁定不想参与后续 γ 与拟合的参数 =====================
-    #lock = ["Km_baso"]                           # 需要固定的参数名，可一次写多个
     param_ids = [i for i in param_ids
              if param_names[i] not in LOCKED]  # 过滤掉锁定项
  
@@ -273,8 +232,6 @@ for outer in range(max_outer):
 
     # —— 5.1 选“要估计的子集”：可指定共线性分析结果最优组合 ——
     # ---------- 自动选 “γ<阈值 且 k 最大” 的参数子集 ----------
-    #gamma_thresh = 10.0                           # 阈值，你也可以传入循环外的同名变量
-
     # Step 1: 对每个 k，判断该大小下的所有子集的 γ_max 是否 <= 阈值
     valid_k = []                                   #记录子集个数
     for k, grp in GammaDF.groupby("Subset size"):  #k是子集大小，grp是对应大小所有子集的组合
