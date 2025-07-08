@@ -1,14 +1,13 @@
 import matplotlib.pyplot as plt
 import datetime
-# import theano.tensor as tt
 import os
 from functools import partial
 from init_param import init_pars
 import numpy as np
 from init_param import QRest, QK, QL, QPlas, VRest, VK, VL, VPlas
 from scipy.optimize import minimize
-import pymc3 as pm
-import arviz as az
+# import pymc3 as pm
+# import arviz as az
 from init_data_point4 import df,time_points_train, concentration_data_train, input_dose_train, inject_timelen_train
 import time
 from tqdm import tqdm
@@ -33,7 +32,8 @@ def total_cost(log_params, time_points_train, concentration_data_train):
         timelen = inject_timelen_train[i]
         D_total = dose
         T_total = timelen
-        result_df = FIT_model(time_points, D_total, T_total, *log_params) 
+        pars_linear = exp_denormalize(log_params)
+        result_df = FIT_model(time_points, D_total, T_total, *pars_linear) 
         observed_values = concentration_data_train[i]
         #print(f"组 {i + 1} 的时间点: {time_points},组 {i + 1} 的预测值: {result_df}")
         #print(f"组 {idx + 1} 的观察值: {observed_values}")
@@ -51,19 +51,17 @@ pars = [init_pars["PRest"], init_pars["PK"], init_pars["PL"], init_pars["Kbile"]
 #param = pars
 log_pars = log_normalize(pars)
 call_count = 0
-#TODO:modfit拟合结果始终不对
-#TODO:翻找之前的modfit
-# ------ 添加验证代码的起始位置 ------
-# 验证初始参数的目标函数值
-initial_cost = total_cost(log_pars , time_points_train, concentration_data_train)
-print(f"Initial cost: {initial_cost}")
+# # ------ 添加验证代码的起始位置 ------
+# # 验证初始参数的目标函数值
+# initial_cost = total_cost(log_pars , time_points_train, concentration_data_train)
+# print(f"Initial cost: {initial_cost}")
 
-# 对 Kbile 增加 10% 扰动
-perturbed_param = np.array(log_pars).copy()  # 确保 param 是 numpy 数组
-perturbed_param[3] *= 1.1  # Kbile 是第4个参数（索引3）
-perturbed_cost = total_cost(perturbed_param, time_points_train, concentration_data_train)
-print(f"Perturbed cost (Kbile +10%): {perturbed_cost}")
-# ------ 添加验证代码的结束位置 ------
+# # 对 Kbile 增加 10% 扰动
+# perturbed_param = np.array(log_pars).copy()  # 确保 param 是 numpy 数组
+# perturbed_param[3] *= 1.1  # Kbile 是第4个参数（索引3）
+# perturbed_cost = total_cost(perturbed_param, time_points_train, concentration_data_train)
+# print(f"Perturbed cost (Kbile +10%): {perturbed_cost}")
+# # ------ 添加验证代码的结束位置 ------
 
 # 定义一个调试目标函数
 # 开始计时

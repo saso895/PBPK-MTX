@@ -75,10 +75,10 @@ save_dir = f'saved_result'
 with tqdm(range(len(time_points_train))) as ybar:
     
 ### >>> 选择参数来源
-    PARAM_SOURCE = "init"          # {"init","modfit","mcmc","file"}
-    PARAM_FILE   = "207result/chain1_params.pkl"   # ← 自行修改路径
+    PARAM_SOURCE = "file"          # {"init","modfit","mcmc","file"}
+    PARAM_FILE   = "saved_result/optimized_params2025-07-07.pkl"   # ← 自行修改路径
     CHAIN_IDX    = 1               # mcmc 多链时选第几链  
-    params = load_parameters(PARAM_SOURCE)   
+    params = load_parameters(PARAM_SOURCE,PARAM_FILE)   
 ### >>> 预测浓度
     # 创建一个列表来存储每个病人的观测变量
     y_mu = []
@@ -97,7 +97,7 @@ with tqdm(range(len(time_points_train))) as ybar:
         if i == 0:                                    # 只打印第一个病例就够对比
             print(f"Cmax (case 1) = {mu[:,1].max():.3f} µmol/L")  
 
-save_path =f'{save_dir}/simu01_{PARAM_SOURCE}_{today_date}.pkl' 
+save_path =f'{save_dir}/simu_{PARAM_SOURCE}_{today_date}.pkl' 
 with open(save_path, 'wb') as f:
     pickle.dump(y_mu, f)
 

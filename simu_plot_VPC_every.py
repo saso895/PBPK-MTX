@@ -19,7 +19,7 @@ from matplotlib.lines import Line2D
 
 today_date = datetime.datetime.now().strftime('%Y-%m-%d')
 BASE_DIR   = 'saved_result'
-DATA_NAME  = 'simu01_init'
+DATA_NAME  = 'simu_file'
 #==========读入模拟数据
 with open(f'{BASE_DIR}\{DATA_NAME}_{today_date}.pkl', 'rb') as f:
     y_simu=pickle.load( f)
@@ -101,13 +101,13 @@ with tqdm(range(len(time_points_train))) as pbar:
 plt.tight_layout()
 
 # === 保存拟合图 ==================================================
-save_path =f'{BASE_DIR}/Simuplot01_{today_date}.svg'
+save_path =f'{BASE_DIR}/Simuplot_{DATA_NAME}_{today_date}.svg'
 plt.savefig(save_path, format='svg')
 plt.show()
 
 # === 🔵 结果输出为 Excel 表格 ====================================
 df_result = pd.DataFrame(result_rows, columns=["Patient_ID", "AFE", "AAFE", "CP90", "Tag"])
-excel_path = f'{BASE_DIR}/Patient_Errors_{today_date}.xlsx'
+excel_path = f'{BASE_DIR}/Patient_Errors_{DATA_NAME}_{today_date}.xlsx'
 df_result.to_excel(excel_path, index=False)
 print(f"✅ 每病人误差评分结果已保存: {excel_path}")
 
@@ -134,13 +134,13 @@ plt.title('Per‑Patient Prediction Metrics (0–1 normalized)')
 plt.xlabel('Metric')
 plt.ylabel('Patient ID')
 plt.tight_layout()
-heatmap_path = f'{BASE_DIR}/Heatmap_{today_date}.png'
+heatmap_path = f'{BASE_DIR}/Heatmap_{DATA_NAME}_{today_date}.png'
 plt.savefig(heatmap_path, dpi=300)
 plt.close()
 print(f"✅ 热图已保存: {heatmap_path}")
 
 # ③   保存 good 病人 ID 清单                # === NEW ===
-good_id_path = f'{BASE_DIR}/good_patient_ids_{today_date}.txt'
+good_id_path = f'{BASE_DIR}/good_patient_{DATA_NAME}_{today_date}.txt'
 with open(good_id_path, 'w', encoding='utf-8') as f:
     f.write(','.join(map(str, good_ids)))
 print(f"✅ good 病人 ID 已保存: {good_id_path}")
