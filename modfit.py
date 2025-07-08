@@ -51,26 +51,24 @@ pars = [init_pars["PRest"], init_pars["PK"], init_pars["PL"], init_pars["Kbile"]
 #param = pars
 log_pars = log_normalize(pars)
 call_count = 0
-# # ------ 添加验证代码的起始位置 ------
-# # 验证初始参数的目标函数值
-# initial_cost = total_cost(log_pars , time_points_train, concentration_data_train)
-# print(f"Initial cost: {initial_cost}")
-
-# # 对 Kbile 增加 10% 扰动
-# perturbed_param = np.array(log_pars).copy()  # 确保 param 是 numpy 数组
-# perturbed_param[3] *= 1.1  # Kbile 是第4个参数（索引3）
-# perturbed_cost = total_cost(perturbed_param, time_points_train, concentration_data_train)
-# print(f"Perturbed cost (Kbile +10%): {perturbed_cost}")
-# # ------ 添加验证代码的结束位置 ------
-
 # 定义一个调试目标函数
 # 开始计时
 start_time = time.time()
 # 使用 minimize 函数进行参数优化
+param_bounds_linear = [
+    (0.10, 0.30),   # PRest
+    (1.0,  3.5),    # PK
+    (2.0,  6.0),    # PL
+    (0.5,  5.0),    # Kbile (h^-1)
+    (5.0,  25.0),   # GFR  (L h^-1)
+    (0.40, 0.80),   # Free (fraction)
+    (20.0, 2000.0), # Vmax_baso (mg h^-1)
+    (5.0,  60.0),   # Km_baso  (mg L^-1)
+    (0.01, 0.20),   # Kurine (h^-1)
+    (0.00, 0.20)    # Kreab  (h^-1)
+]  # ★★ 仅此列表被替换
+bounds = [(np.log(lo), np.log(hi)) for lo, hi in param_bounds_linear]
 
-bounds = [(np.log(0.01*p), np.log(10*p)) for p in pars]
-#options = {'disp': True, 'maxiter': 1000, 'ftol': 1e-5}
-#def total_cost(params, time_points_train, concentration_data_train):
 result = minimize(total_cost,  
                   log_pars, 
                   args = (time_points_train, concentration_data_train),
