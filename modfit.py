@@ -56,24 +56,26 @@ call_count = 0
 start_time = time.time()
 # 使用 minimize 函数进行参数优化
 param_bounds_linear = [
-    (0.10, 0.30),   # PRest
-    (1.0,  3.5),    # PK
-    (2.0,  6.0),    # PL
-    (0.5,  5.0),    # Kbile (h^-1)
-    (5.0,  25.0),   # GFR  (L h^-1)
-    (0.40, 0.80),   # Free (fraction)
-    (20.0, 2000.0), # Vmax_baso (mg h^-1)
-    (5.0,  60.0),   # Km_baso  (mg L^-1)
-    (0.01, 0.20),   # Kurine (h^-1)
-    (0.00, 0.20)    # Kreab  (h^-1)
+    (0.15,  0.30),   # PRest
+    (1.00,  3.50),    # PK
+    (2.00,  5.00),    # PL
+    (0.50,  5.00),    # Kbile (h^-1)
+    (5.00,  25.0),   # GFR  (L h^-1)
+    (0.45,  0.76),   # Free (fraction)
+    (20.0,  600.0), # Vmax_baso (mg h^-1)
+    (5.00,  300.0),   # Km_baso  (mg L^-1)
+    (0.02,  0.25),   # Kurine (h^-1)
+    (0.00,  0.20)    # Kreab  (h^-1)
 ]  # ★★ 仅此列表被替换
 bounds = [(np.log(lo), np.log(hi)) for lo, hi in param_bounds_linear]
 
 result = minimize(total_cost,  
                   log_pars, 
                   args = (time_points_train, concentration_data_train),
-                  method = 'Powell')#bounds=bounds, , options=options
-# 结束计时total_cost(pars,dose_datas, time_points_train, concentration_data_train)
+                  method = 'Powell',
+                  bounds=bounds             # ★★ <-- 把这行加回来
+                  )#bounds=bounds, , options=options
+
 end_time = time.time()
 # 计算并打印运行时间
 elapsed_time = end_time - start_time
@@ -90,7 +92,7 @@ print(f"原始参数: \n{init_pars}")
 print(f"优化参数: \n{popt}")
 
 # 保存优化后的参数
-with open(f'saved_result/optimized_params{today_date}.pkl', 'wb') as f:
+with open(f'saved_result/modfit_params01{today_date}.pkl', 'wb') as f:
     pickle.dump(popt, f)
 
 print("✔🌟优化参数已保存")

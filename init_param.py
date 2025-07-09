@@ -16,7 +16,8 @@ VPlas               =  5.6000      #  L Cardiac output (Brown 1997)
 PRest               =  0.2      # Restofbody/plasma PC; (Average of fat and non fat) 
 PK                  =  2.9      # Kidney/plasma PC; (calKP_PT.R)
 PL                  =  4.66     # Liver/plasma PC; (calKP_PT.R) 
-Kbile               =  3.3      # L/hr
+CLB                 =  3.3      # L/hr
+Kbile               =  CLB / VL # L/hr
 GFR                 =  13.9     # L/hr (Kayode Ogungbenro，2014)
 Free                =  0.58     # MTX unbound fractions in plasma (Giuseppe Pesenti et al., 2021)
 
@@ -29,7 +30,7 @@ Vmax_baso_invitro   =  242.75   # pmol/mg protein/min, Average of OAT3 and Rfc1
 Vmax_basoC = Vmax_baso_invitro*PTC*protein*60*(MW/1e12)*1000 #; // mg/h/kg BW^0.75, Vmax of basolateral transporters (average Oat1 and Oat3)
 
 
-Vmax_baso = Vmax_basoC*BW**0.75#; // mg/h
+Vmax_baso = Vmax_basoC*BW**0.75 #; // mg/h
 Km_baso             =  17.814   # mg/L, Km of basolateral transpoter, Average of OAT3 and Rfc1
 Kurine              =  0.063    # L/h, Rate of urine elimination from urine storage (male) (fit to data)
 Kreab               =  0.1      # L/hr
