@@ -13,7 +13,7 @@ from init_data_point4 import (time_points_train,
 today       = datetime.datetime.now().strftime('%Y-%m-%d')
 server =209
 result_dir  = f'saved_result'   #{server}result
-DATA_NAME   = 'simu01_modfit'   #simu_file
+DATA_NAME   = 'simu03_modfit'   #simu_file
 fixed_name  = f'good_patient_{DATA_NAME}_{today}.txt'
 SELECT_MODE = "all"        # <<< "all" | "good"  二选一  ### >>> NEW
 # ------------ ① 找到 ID 文件（自动兜底） ---------------  # === FIX ===

@@ -50,10 +50,15 @@ def total_cost(log_params, time_points_train, concentration_data_train):
         obs_use = np.where(obs_raw <= 0, EPS, obs_raw)   # 0 → ε
         #observed_values = concentration_data_train[i]
         #print(f"组 {i + 1} 的时间点: {time_points},组 {i + 1} 的预测值: {result_df}")
-        #print(f"组 {idx + 1} 的观察值: {observed_values}")
-                # ------ 对数残差 ------------------------------------------------
+        #print(f"组 {idx + 1} 的观察值: {observed_values}")    
+        # ------ 对数残差 ------------------------------------------------
         log_res_sq = (np.log(result_df + EPS) - np.log(obs_use)) ** 2
-        total_log_sse += np.sum(log_res_sq)
+                # === MOD BEGIN ❷ : 高浓 ↑权重 / 低浓 ↓权重 =============
+        # 以 1 mg·L⁻¹ 为阈值：>1 → 2.0，≤1 → 0.5
+        w = np.where(obs_use > 1.0, 2.0, 0.5)
+        total_log_sse += np.sum(w * log_res_sq)
+        # === MOD END ❷ ========================================
+        #total_log_sse += np.sum(log_res_sq)
         #cost = np.sum((result_df - observed_values)**2)
         #print(f"组 {i + 1} 的成本: {cost}")
         #total_cost += cost
@@ -72,16 +77,23 @@ call_count = 0
 # 开始计时
 start_time = time.time()
 # 使用 minimize 函数进行参数优化
+pk0   = init_pars["PK"]
+pl0   = init_pars["PL"]
+kur0  = init_pars["Kurine"]
+
 param_bounds_linear = [
     (0.15,  0.30),   # PRest
-    (1.00,  3.50),    # PK
-    (2.00,  5.00),    # PL
+    (pk0  * 0.2, pk0  * 8.0),  # PK      ← 放宽
+    (pl0  * 0.2, pl0  * 8.0),  # PL      ← 放宽
+    # (1.00,  3.50),    # PK
+    # (2.00,  5.00),    # PL
     (0.50,  5.00),    # Kbile (h^-1)
     (5.00,  25.0),   # GFR  (L h^-1)
     (0.45,  0.76),   # Free (fraction)
     (20.0,  600.0), # Vmax_baso (mg h^-1)
     (5.00,  300.0),   # Km_baso  (mg L^-1)
-    (0.02,  0.25),   # Kurine (h^-1)
+    #(0.02,  0.25),   # Kurine (h^-1)
+    (kur0 * 0.2, kur0 * 8.0),  # Kurine  ← 放宽
     (0.00,  0.20)    # Kreab  (h^-1)
 ]  # ★★ 仅此列表被替换
 bounds = [(np.log(lo), np.log(hi)) for lo, hi in param_bounds_linear]
@@ -109,7 +121,7 @@ print(f"原始参数: \n{init_pars}")
 print(f"优化参数: \n{popt}")
 
 # 保存优化后的参数
-with open(f'saved_result/modfit_params{today_date}.pkl', 'wb') as f:
+with open(f'saved_result/modfit_params04{today_date}.pkl', 'wb') as f:
     pickle.dump(popt, f)
 
 print("✔🌟优化参数已保存")

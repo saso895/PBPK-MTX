@@ -19,7 +19,7 @@ from matplotlib.lines import Line2D
 
 today_date = datetime.datetime.now().strftime('%Y-%m-%d')
 BASE_DIR   = 'saved_result'
-DATA_NAME  = 'simu01_modfit'
+DATA_NAME  = 'simu03_modfit'
 #==========读入模拟数据
 with open(f'{BASE_DIR}\{DATA_NAME}_{today_date}.pkl', 'rb') as f:
     y_simu=pickle.load( f)
@@ -65,6 +65,7 @@ with tqdm(range(len(time_points_train))) as pbar:
         
         # === 🟡 误差指标分析（y 为基准） =======================
         y_obs = concentration
+        
         # 使用插值将 y 预测值映射到观测时间点
         y_pred = np.interp(time, y[:, 0], y[:, 1])
         y_5 = y_pred * 0.8
@@ -78,7 +79,7 @@ with tqdm(range(len(time_points_train))) as pbar:
         cp90 = np.mean((y_obs >= y_5) & (y_obs <= y_95))
 
         # --- 标签规则（依据文献：AFE 与 AAFE 均在 0.5–2 fold 内视为 good）
-        if 0.5 <= aafe <= 2 and 0.5 <= afe <= 2:
+        if  aafe <= 2 and 0.5 <= afe <= 2:
             tag = "good"
             good_ids.append(i + 1) 
         else:
