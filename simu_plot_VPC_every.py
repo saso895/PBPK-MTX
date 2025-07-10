@@ -19,7 +19,7 @@ from matplotlib.lines import Line2D
 
 today_date = datetime.datetime.now().strftime('%Y-%m-%d')
 BASE_DIR   = 'saved_result'
-DATA_NAME  = 'simu_modfit'
+DATA_NAME  = 'simu01_modfit'
 #==========读入模拟数据
 with open(f'{BASE_DIR}\{DATA_NAME}_{today_date}.pkl', 'rb') as f:
     y_simu=pickle.load( f)
