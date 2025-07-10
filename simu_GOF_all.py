@@ -13,7 +13,7 @@ from init_data_point4 import (time_points_train,
 today       = datetime.datetime.now().strftime('%Y-%m-%d')
 server =209
 result_dir  = f'saved_result'   #{server}result
-DATA_NAME   = 'simu01_modfit'   #simu_file
+DATA_NAME   = 'simu_modfit'   #simu_file
 fixed_name  = f'good_patient_{DATA_NAME}_{today}.txt'
 SELECT_MODE = "all"        # <<< "all" | "good"  二选一  ### >>> NEW
 # ------------ ① 找到 ID 文件（自动兜底） ---------------  # === FIX ===
@@ -89,6 +89,8 @@ plt.plot([x_min, x_max], [x_min*2.0,  x_max*2.0 ], 'r--', lw=1, alpha=0.6,color=
 # === 2-fold FIX ===  把 x、y 轴都设为对数尺度
 plt.xscale('log')
 plt.yscale('log')
+plt.xlim(x_min, x_max)          ### >>> NEW (equal-axes)
+plt.ylim(x_min, x_max)          ### >>> NEW (equal-axes)
 plt.xlabel('Observed Concentration (mg/L)')
 plt.ylabel('Predicted Concentration (mg/L)')
 plt.title(f'GOF Plot for GOOD Patients ({len(id_list)} subjects)')

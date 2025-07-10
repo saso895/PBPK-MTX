@@ -18,30 +18,47 @@ from ode_core import derivshiv,PK_model,FIT_model,log_normalize,exp_denormalize
 # 获取当前日期
 today_date = datetime.datetime.now().strftime('%Y-%m-%d') 
 
+# === MOD BEGIN ❶ : 计算 ε = LLOQ/2 ====================================
+# 1) 用于将观测值中的 0 / BLQ 替换为 ε
+# 2) 用于对数残差：log(pred + ε) - log(obs + ε)
+_positive_vals = np.concatenate([arr[arr > 0] for arr in concentration_data_train])
+if _positive_vals.size == 0:
+    raise ValueError("训练数据全部为 0，无法确定 LLOQ")
+LLOQ = _positive_vals.min()
+EPS = LLOQ / 2.0          # 例如最小 0.00317 → EPS ≈ 0.0016
+print(f"▶  Using ε = LLOQ/2 = {EPS:.4g} mg/L  for log-SSE")
+# === MOD END ❶ ========================================================
+
+
 def total_cost(log_params, time_points_train, concentration_data_train):
     global call_count
     call_count += 1  # 每次调用时增加计数器
     #print(f"Total cost 调用次数: {call_count}")
     # 打印输入参数
     #print(f"Parameters : {exp_denormalize(pars)}")
-    total_cost = 0
+    total_log_sse = 0.0  
+    #total_cost = 0
     for i in tqdm(range(len(time_points_train))):
     
         time_points = time_points_train[i]        
         dose = input_dose_train[i]
         timelen = inject_timelen_train[i]
-        D_total = dose
-        T_total = timelen
         pars_linear = exp_denormalize(log_params)
-        result_df = FIT_model(time_points, D_total, T_total, *pars_linear) 
-        observed_values = concentration_data_train[i]
+        result_df = FIT_model(time_points, dose, timelen, *pars_linear) 
+        # ------ 观测值预处理 --------------------------------------------
+        obs_raw = concentration_data_train[i]
+        obs_use = np.where(obs_raw <= 0, EPS, obs_raw)   # 0 → ε
+        #observed_values = concentration_data_train[i]
         #print(f"组 {i + 1} 的时间点: {time_points},组 {i + 1} 的预测值: {result_df}")
         #print(f"组 {idx + 1} 的观察值: {observed_values}")
-        cost = np.sum((result_df - observed_values)**2)
+                # ------ 对数残差 ------------------------------------------------
+        log_res_sq = (np.log(result_df + EPS) - np.log(obs_use)) ** 2
+        total_log_sse += np.sum(log_res_sq)
+        #cost = np.sum((result_df - observed_values)**2)
         #print(f"组 {i + 1} 的成本: {cost}")
-        total_cost += cost
-    print(f"总成本: {total_cost}")
-    return total_cost
+        #total_cost += cost
+    print(f"对数总成本: {total_log_sse}")
+    return total_log_sse
 ##############################--------modfit参数优化--------#################################################
 #未优化的参数
 pars = [init_pars["PRest"], init_pars["PK"], init_pars["PL"], init_pars["Kbile"], init_pars["GFR"],
@@ -92,7 +109,7 @@ print(f"原始参数: \n{init_pars}")
 print(f"优化参数: \n{popt}")
 
 # 保存优化后的参数
-with open(f'saved_result/modfit_params01{today_date}.pkl', 'wb') as f:
+with open(f'saved_result/modfit_params{today_date}.pkl', 'wb') as f:
     pickle.dump(popt, f)
 
 print("✔🌟优化参数已保存")

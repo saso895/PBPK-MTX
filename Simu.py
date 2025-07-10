@@ -75,8 +75,8 @@ save_dir = f'saved_result'
 with tqdm(range(len(time_points_train))) as ybar:
     
 ### >>> 选择参数来源
-    PARAM_SOURCE = "file"          # {"init","modfit","mcmc","file"}
-    PARAM_FILE   = "saved_result/optimized_params2025-07-07.pkl"   # ← 自行修改路径
+    PARAM_SOURCE = "modfit"          # {"init","modfit","mcmc","file"}
+    PARAM_FILE   = "saved_result/modfit_params012025-07-09.pkl"   # ← 自行修改路径
     CHAIN_IDX    = 1               # mcmc 多链时选第几链  
     params = load_parameters(PARAM_SOURCE,PARAM_FILE)   
 ### >>> 预测浓度
