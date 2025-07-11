@@ -55,15 +55,10 @@ def total_cost(log_params, time_points_train, concentration_data_train):
         log_res_sq = (np.log(result_df + EPS) - np.log(obs_use)) ** 2
                 # === MOD BEGIN ❷ : 高浓 ↑权重 / 低浓 ↓权重 =============
         # 以 1 mg·L⁻¹ 为阈值：>1 → 2.0，≤1 → 0.5
-        #w = np.where(obs_use > 1.0, 2.0, 0.5)
-        w = 0.3 + 2.7 * (obs_use / 1.0)**0.7
-        #w = np.clip(0.3 + 2.7 * (obs_use / 1.0) ** 0.7, 0.3, 5.0)
+
+        w = 0.3 + 2.7 * (obs_use / 1.0)**0.58    
         total_log_sse += np.sum(w * log_res_sq)
-        # === MOD END ❷ ========================================
-        #total_log_sse += np.sum(log_res_sq)
-        #cost = np.sum((result_df - observed_values)**2)
-        #print(f"组 {i + 1} 的成本: {cost}")
-        #total_cost += cost
+
     print(f"对数总成本: {total_log_sse}")
     return total_log_sse
 ##############################--------modfit参数优化--------#################################################
@@ -91,20 +86,20 @@ kur0  = init_pars["Kurine"]
 pr0   = init_pars["PRest"]
 
 param_bounds_linear = [
-    #(0.15,  0.30),   # PRest
-    (pr0  * 0.3, pr0  * 5.0),   # PRest   ← 放宽
-    (pk0  * 0.2, pk0  * 8.0),  # PK      ← 放宽
-    (pl0  * 0.2, pl0  * 8.0),  # PL      ← 放宽
-    # (1.00,  3.50),    # PK
-    # (2.00,  5.00),    # PL
+    (0.15,  0.30),   # PRest
+    # (pr0  * 0.3, pr0  * 5.0),   # PRest   ← 放宽
+    # (pk0  * 0.2, pk0  * 8.0),  # PK      ← 放宽
+    # (pl0  * 0.2, pl0  * 8.0),  # PL      ← 放宽
+     (0.100,  5.00),    # PK
+     (0.100,  5.00),    # PL
     (0.50,  5.00),    # Kbile (h^-1)
     (5.00,  25.0),   # GFR  (L h^-1)
     (0.45,  0.76),   # Free (fraction)
-    (vmax0 * 0.1, vmax0 * 10.0),# Vmax_baso ← 放宽
-    #(20.0,  600.0), # Vmax_baso (mg h^-1)
+    #(vmax0 * 0.1, vmax0 * 10.0),# Vmax_baso ← 放宽
+    (20.0,  600.0), # Vmax_baso (mg h^-1)
     (5.00,  300.0),   # Km_baso  (mg L^-1)
-    #(0.02,  0.25),   # Kurine (h^-1)
-    (kur0 * 0.2, kur0 * 8.0),  # Kurine  ← 放宽
+    (0.02,  0.25),   # Kurine (h^-1)
+    #(kur0 * 0.2, kur0 * 8.0),  # Kurine  ← 放宽
     (0.00,  0.20)    # Kreab  (h^-1)
 ]  # ★★ 仅此列表被替换
 bounds = [(np.log(lo), np.log(hi)) for lo, hi in param_bounds_linear]
@@ -137,7 +132,7 @@ print("└──────────┴────────────�
 # print(f"优化参数: \n{popt}")
 
 # 保存优化后的参数
-with open(f'saved_result/modfit01_params{today_date}.pkl', 'wb') as f:
+with open(f'saved_result/modfit02_params{today_date}.pkl', 'wb') as f:
     pickle.dump(popt, f)
 
 print("✔🌟优化参数已保存")
