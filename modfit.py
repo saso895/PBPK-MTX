@@ -56,8 +56,8 @@ def total_cost(log_params, time_points_train, concentration_data_train):
                 # === MOD BEGIN ❷ : 高浓 ↑权重 / 低浓 ↓权重 =============
         # 以 1 mg·L⁻¹ 为阈值：>1 → 2.0，≤1 → 0.5
         #w = np.where(obs_use > 1.0, 2.0, 0.5)
-        w = 0.3 + 2.7 * (obs_use / 1.0)**0.4
-
+        w = 0.3 + 2.7 * (obs_use / 1.0)**0.7
+        #w = np.clip(0.3 + 2.7 * (obs_use / 1.0) ** 0.7, 0.3, 5.0)
         total_log_sse += np.sum(w * log_res_sq)
         # === MOD END ❷ ========================================
         #total_log_sse += np.sum(log_res_sq)
@@ -87,8 +87,8 @@ pk0   = init_pars["PK"]
 pl0   = init_pars["PL"]
 kur0  = init_pars["Kurine"]
 vmax0 = init_pars["Vmax_baso"]
-kur0 = init_pars["Kurine"]
-pr0  = init_pars["PRest"]
+kur0  = init_pars["Kurine"]
+pr0   = init_pars["PRest"]
 
 param_bounds_linear = [
     #(0.15,  0.30),   # PRest
@@ -137,7 +137,7 @@ print("└──────────┴────────────�
 # print(f"优化参数: \n{popt}")
 
 # 保存优化后的参数
-with open(f'saved_result/modfit_params{today_date}.pkl', 'wb') as f:
+with open(f'saved_result/modfit01_params{today_date}.pkl', 'wb') as f:
     pickle.dump(popt, f)
 
 print("✔🌟优化参数已保存")
