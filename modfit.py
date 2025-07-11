@@ -55,7 +55,9 @@ def total_cost(log_params, time_points_train, concentration_data_train):
         log_res_sq = (np.log(result_df + EPS) - np.log(obs_use)) ** 2
                 # === MOD BEGIN ❷ : 高浓 ↑权重 / 低浓 ↓权重 =============
         # 以 1 mg·L⁻¹ 为阈值：>1 → 2.0，≤1 → 0.5
-        w = np.where(obs_use > 1.0, 2.0, 0.5)
+        #w = np.where(obs_use > 1.0, 2.0, 0.5)
+        w = 0.3 + 2.7 * (obs_use / 1.0)**0.4
+
         total_log_sse += np.sum(w * log_res_sq)
         # === MOD END ❷ ========================================
         #total_log_sse += np.sum(log_res_sq)
@@ -69,7 +71,11 @@ def total_cost(log_params, time_points_train, concentration_data_train):
 pars = [init_pars["PRest"], init_pars["PK"], init_pars["PL"], init_pars["Kbile"], init_pars["GFR"],
                  init_pars["Free"], init_pars["Vmax_baso"], init_pars["Km_baso"], init_pars["Kurine"],
              init_pars["Kreab"]]
-
+param_names = [
+    "PRest", "PK", "PL", "Kbile", "GFR",
+    "Free", "Vmax_baso", "Km_baso", "Kurine", "Kreab"
+]
+pars_linear = [init_pars[p] for p in param_names]
 #param = pars
 log_pars = log_normalize(pars)
 call_count = 0
@@ -80,9 +86,13 @@ start_time = time.time()
 pk0   = init_pars["PK"]
 pl0   = init_pars["PL"]
 kur0  = init_pars["Kurine"]
+vmax0 = init_pars["Vmax_baso"]
+kur0 = init_pars["Kurine"]
+pr0  = init_pars["PRest"]
 
 param_bounds_linear = [
-    (0.15,  0.30),   # PRest
+    #(0.15,  0.30),   # PRest
+    (pr0  * 0.3, pr0  * 5.0),   # PRest   ← 放宽
     (pk0  * 0.2, pk0  * 8.0),  # PK      ← 放宽
     (pl0  * 0.2, pl0  * 8.0),  # PL      ← 放宽
     # (1.00,  3.50),    # PK
@@ -90,7 +100,8 @@ param_bounds_linear = [
     (0.50,  5.00),    # Kbile (h^-1)
     (5.00,  25.0),   # GFR  (L h^-1)
     (0.45,  0.76),   # Free (fraction)
-    (20.0,  600.0), # Vmax_baso (mg h^-1)
+    (vmax0 * 0.1, vmax0 * 10.0),# Vmax_baso ← 放宽
+    #(20.0,  600.0), # Vmax_baso (mg h^-1)
     (5.00,  300.0),   # Km_baso  (mg L^-1)
     #(0.02,  0.25),   # Kurine (h^-1)
     (kur0 * 0.2, kur0 * 8.0),  # Kurine  ← 放宽
@@ -116,12 +127,17 @@ popt = exp_denormalize(log_opt)
 print("优化结果消息:", result.message)
 print("是否成功:", result.success)
 print("最终目标函数值:", result.fun)
-
-print(f"原始参数: \n{init_pars}")
-print(f"优化参数: \n{popt}")
+print("\n┌──────────┬────────────┬────────────┐")
+print("│ Parameter│  Initial   │  Optimized │")
+print("├──────────┼────────────┼────────────┤")
+for n, v0, v1 in zip(param_names, pars_linear, popt):
+    print(f"│ {n:<9}│ {v0:>10.4g} │ {v1:>10.4g} │")
+print("└──────────┴────────────┴────────────┘\n")
+# print(f"原始参数: \n{init_pars}")
+# print(f"优化参数: \n{popt}")
 
 # 保存优化后的参数
-with open(f'saved_result/modfit_params04{today_date}.pkl', 'wb') as f:
+with open(f'saved_result/modfit_params{today_date}.pkl', 'wb') as f:
     pickle.dump(popt, f)
 
 print("✔🌟优化参数已保存")
