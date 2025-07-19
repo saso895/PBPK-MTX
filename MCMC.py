@@ -14,6 +14,13 @@ from joblib import Parallel, delayed
 import matplotlib.pyplot as plt
 from scipy.integrate import solve_ivp
 import arviz as az
+from pathlib import Path
+# --- 2. File paths --------------------------------------------------------------
+SCRIPT_DIR = Path(__file__).resolve().parent
+OUTPUT_DIR = SCRIPT_DIR / "saved_result"
+OUTPUT_DIR.mkdir(exist_ok=True)
+
+PRIOR_FILE = OUTPUT_DIR / "modfit02_params2025-07-11.pkl"
 #from tqdm.contrib.concurrent import tqdm_joblib   # 让 joblib 也带总进度条
 today_date = datetime.datetime.now().strftime('%Y-%m-%d')
 
@@ -60,7 +67,7 @@ def FIT_model(t, D_total, T_total, *params):
 
 # ---------------------------------------------------------------
 # === 2. 读入  先验中心 ===============================
-with open('/saved_result/modfit02_params2025-07-11.pkl', 'rb') as f:
+with open(PRIOR_FILE, 'rb') as f:
     theta_start = pickle.load(f)          # 10 维 ndarray
 
 param_names = ["PRest","PK","PL","Kbile","GFR","Free",
@@ -153,7 +160,7 @@ def run_chain(seed,chain_id=None, progress_bar=True):
 
         # === ★★ checkpoint：每 10 k 步 dump =====================
         if (i + 1) % checkpoint_int == 0:
-            ck_path = f"ckpt_chain{chain_id}_{i+1}.pkl"
+            ck_path = f"{OUTPUT_DIR}\\ckpt_chain{chain_id}_{i+1}.pkl"
             pickle.dump({
                 "iter":   i + 1,
                 "phi":    curr_log,
@@ -194,23 +201,26 @@ if __name__ == "__main__":
     post_list = [c[burn_in::thin] for c in chain_list]
 
     import pickle, os
-    os.makedirs('/saved_result', exist_ok=True)
+    os.makedirs('/{relative_path}', exist_ok=True)
 
     for k, pc in enumerate(post_list, 1):          # post_list 里是 burn-in 后样本
         theta_k = pc.mean(axis=0)                  # 单链后验均值
             # ✅ 保存该链 burn-in 后的完整后验样本
-        draw_path = f"/saved_result/chain{k}_draws{today_date}.pkl"
+                    # ★ 新增：格式化打印到终端 ★
+        print(f"\n后验均值参数 — 链 {k}")
+        draw_path = f"{OUTPUT_DIR}\\chain{k}_draws{today_date}.pkl"
+        
         with open(draw_path, "wb") as f:
             pickle.dump(pc, f)
         print(f"链 {k} 后验样本已保存 ➜ {draw_path}")
         
-        # ★ 新增：格式化打印到终端 ★
-        print(f"\n后验均值参数 — 链 {k}")
-        for name, val in zip(param_names, theta_k):
-            print(f"{name:<12s}{val:>12.6g}")
-        path_k  = f"/saved_result/chain{k}_params{today_date}.pkl"
-        pickle.dump(theta_k, open(path_k, "wb"))   # 保存
-        print(f"链 {k} 后验均值已保存 ➜ {path_k}")
+        # # ★ 新增：格式化打印到终端 ★
+        # print(f"\n后验均值参数 — 链 {k}")
+        # for name, val in zip(param_names, theta_k):
+        #     print(f"{name:<12s}{val:>12.6g}")
+        # path_k  = f"/{relative_path}/chain{k}_params{today_date}.pkl"
+        # pickle.dump(theta_k, open(path_k, "wb"))   # 保存
+        print(f"链 {k} 后验均值已保存 ➜ {draw_path}")
     # =========================================================
 
     post_all  = np.concatenate(post_list, axis=0)               # ★ 新增
@@ -245,26 +255,27 @@ for k in range(step_report, n_iter + 1, step_report):
     max_rhat = summ_k['r_hat'].max()
     min_ess  = summ_k['ess_bulk'].min()
 
-    ts = datetime.datetime.now().strftime('%Y-%m-%d %H:%M')
+    ts = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')
     report_rows.append(dict(
-        时刻=ts, Draws=k, max_rhat=float(max_rhat), min_ess=int(min_ess)))
+        时刻=ts, Draws=k, max_rhat=float(max_rhat), min_ess = None if np.isnan(min_ess) else int(min_ess)))
 
     print(f"\n📊 迭代 {k:,}:  max r̂={max_rhat:.3f},  min ESS={min_ess:.0f}")
 
 
     # === PATCH-3 : 写 Excel ===============================
     rep_df = pd.DataFrame(report_rows)
-    out_xlsx = f"/saved_result/mcmc_diag_{today_date}.xlsx"
+    out_xlsx = f"{OUTPUT_DIR}\\mcmc_diag_{today_date}.xlsx"
     rep_df.to_excel(out_xlsx, index=False)
     print(f"\n✅ 诊断表已保存 ➜ {out_xlsx}")
     # ------------------------------------------------------------
     plt.tight_layout()
-    plt.savefig(f"/saved_result/mcmc_traceplot{today_date}.png", dpi=300)
+    fig_path =  f"{OUTPUT_DIR}\\mcmc_traceplot{today_date}.svg"
+    plt.savefig(fig_path, dpi=300)
     plt.close()
 
     # === 8. 保存后验均值 ============
-    #os.makedirs('saved_result', exist_ok=True)
-    out_path = f'/saved_result/mcmc_params{today_date}.pkl'
+    #os.makedirs('{relative_path}', exist_ok=True)
+    out_path = f"{OUTPUT_DIR}\\mcmc_params{today_date}.pkl"
     with open(out_path,'wb') as f:
         pickle.dump(theta_post_mean, f)
     print(f"\n🌟 已保存到 {out_path}")
@@ -294,7 +305,7 @@ for k in range(step_report, n_iter + 1, step_report):
 
         diag = az.summary(idata, var_names=param_names)[
                    ["r_hat","ess_bulk","ess_tail"]]
-        diag_csv = f"/saved_result/rhat_ess_{today_date}.csv"
+        diag_csv = f"{OUTPUT_DIR}\\rhat_ess_{today_date}.csv"
         diag.to_csv(diag_csv)
 
         print("\n=== R-hat / ESS (post burn-in) ===")
