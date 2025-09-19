@@ -1,15 +1,21 @@
 import numpy as np, pathlib, datetime, subprocess, json
-from init_param import (
+from init_param0723 import (
     PRest, PK, PL, Kbile, GFR,
-    Free,  Vmax_baso, Km_baso, Kurine, Kreab, VPlas
+    Free,  Vmax_baso, Km_baso, Kurine, Kreab, VPlas,
+        # === MOD BEGIN 2025‑07‑23 新增参数引入 ===
+        Vmax_apical, Km_apical, Vmax_bile, Km_bile
+    # === MOD END ============================
 )
-from ode_core import derivshiv          # ← 复用你已有的 derivshiv
+from ode_core0723 import derivshiv          # ← 复用你已有的 derivshiv
 from checks import mass_balance, write_report
 from scipy.integrate import odeint
 # ------------------------------------------------------------
 baseline_init = np.array([
     PRest, PK, PL, Kbile, GFR,
     Free,  Vmax_baso, Km_baso, Kurine, Kreab,
+        # === MOD BEGIN 2025‑07‑23 新增参数引入 ===
+    Vmax_apical, Km_apical, Vmax_bile, Km_bile
+    # === MOD END ============================
 ], dtype=float)
 
 OUT = pathlib.Path("saved_result")
