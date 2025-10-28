@@ -157,7 +157,7 @@ for j in range(i + 1, len(axes)):
 
 plt.tight_layout(rect=[0, 0, 1, 0.96])
 plt.suptitle("PBPK Prediction – Mean & 5/95 Percentiles", y=0.995)
-plot_path = f"{BASE_DIR}/Simuplot_{DATA_NAME}_{today_date}.svg"
+plot_path = f"{BASE_DIR}/Simuplot_{DATA_NAME}_{today_date}.pdf"
 plt.savefig(plot_path)
 plt.show()
 print(f"✅ 情景图已保存: {plot_path}")

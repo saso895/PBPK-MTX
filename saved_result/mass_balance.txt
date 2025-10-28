@@ -1,1 +1,1 @@
-Mass balance recovery = 1.0000
+Mass balance recovery = 0.1786
